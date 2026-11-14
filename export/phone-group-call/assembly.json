@@ -1,0 +1,83 @@
+{
+  "schema_version": "1",
+  "phones": [
+    {
+      "id": "founder",
+      "role": "founder",
+      "app_opened": true,
+      "incoming_call_signal": "PHONE_STATE_RINGING",
+      "privilege": {
+        "production": "shizuku",
+        "break_glass": "magisksu_human_gated",
+        "injection": "out"
+      },
+      "container": {
+        "skills": [
+          {
+            "name": "seat",
+            "skill_md": { "steps_only": true, "holds_secret": false },
+            "receipts": { "file": "receipts.jsonl", "counts_only": true, "ok": 0, "attempts": 0 }
+          }
+        ]
+      },
+      "solid": {
+        "buddy_mcp": "127.0.0.1:8765",
+        "arrowloop": "installed",
+        "android_harness": "installed",
+        "shizuku": "on"
+      },
+      "watch": { "held_to_phone": true }
+    },
+    {
+      "id": "caller",
+      "role": "caller",
+      "app_opened": true,
+      "incoming_call_signal": "PHONE_STATE_RINGING",
+      "privilege": {
+        "production": "shizuku",
+        "break_glass": "magisksu_human_gated",
+        "injection": "out"
+      },
+      "container": { "skills": [] },
+      "watch": { "held_to_phone": false }
+    }
+  ],
+  "call": {
+    "mode": "rtmp_stream",
+    "tl_type": "GroupCall",
+    "input": { "tl_type": "InputGroupCall", "id": null, "access_hash": null },
+    "methods": [
+      "phone.createGroupCall",
+      "phone.getGroupCallStreamRtmpUrl",
+      "phone.joinGroupCall",
+      "phone.leaveGroupCall"
+    ],
+    "rtmp": { "url_type": "phone.GroupCallStreamRtmpUrl", "key_in_export": false },
+    "participants": [
+      {
+        "phone_id": "founder",
+        "peer": "founder",
+        "muted": false,
+        "left": false,
+        "video_stopped": false,
+        "publisher": true
+      },
+      {
+        "phone_id": "caller",
+        "peer": "caller",
+        "muted": true,
+        "left": false,
+        "video_stopped": true,
+        "publisher": false
+      }
+    ]
+  },
+  "clerk": { "bit": 1, "decision": "allow", "model_in_decision": false },
+  "route": [
+    "app_opened",
+    "watch_held_to_phone",
+    "clerk_sets_bit",
+    "one_publisher_on_rtmp",
+    "listeners_join_video_stopped"
+  ]
+}

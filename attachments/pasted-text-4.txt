@@ -1,0 +1,20 @@
+You're right—DroidBridge and Phone-MCP rely on Shizuku/Wireless Debugging, which wasn't what you meant. If you want zero Shizuku, zero ADB, zero root, and zero PC middleman—just a native Android APK that runs its own MCP server right on the phone using standard Android Accessibility Services—here are the exact projects doing that:
+
+1. Android Remote Control MCP (danielealbano/android-remote-control-mcp)
+
+Android Remote Control MCP is a native Android app that runs a full HTTP/HTTPS MCP server directly on the phone itself with no ADB, no Shizuku, no root, and no computer in the middle. [1] (https://news.ycombinator.com/item?id=49362047), [2] (https://github.com/danielealbano/android-remote-control-mcp)
+• Pure Accessibility Architecture. You install the APK, toggle on Android's native Accessibility Service (allowing Restricted Settings on Android 13+/One UI), and start the server inside the app. Nothing else is required. [1] (https://news.ycombinator.com/item?id=49362047), [2] (https://github.com/danielealbano/android-remote-control-mcp)
+• Built-In OAuth & Remote Tunneling. The app acts as its own OAuth server (you approve connections with a code right on the phone) and connects directly to Claude.ai, Claude Desktop, or ChatGPT over HTTP/HTTPS or reverse tunnels—no external PC relay needed. [1] (https://news.ycombinator.com/item?id=49362047)
+• On-Device PII Redaction. Includes a local Privacy Mode that uses deterministic detectors plus a small on-device model to strip emails, card numbers, credentials, and names from the accessibility tree before anything leaves the phone. [1] (https://news.ycombinator.com/item?id=49362047), [2] (https://github.com/danielealbano/android-remote-control-mcp)
+• Core Tool Surface. Exposes native accessibility tree reads (dump), taps, text input, swipes, screenshots, file management, and app launching with aggressive token optimization. [1] (https://news.ycombinator.com/item?id=49362047), [2] (https://github.com/danielealbano/android-remote-control-mcp)
+
+2. AuraFriday android_mcp (AuraFriday/android_mcp)
+
+AuraFriday android_mcp turns any Android device (phone, tablet, watch, TV, or car head unit) into a bidirectional MCP node—allowing AI models to control the Android device as an MCP tool and letting the Android device control external MCP servers directly, without ADB or Shizuku. [1] (https://github.com/AuraFriday/android_mcp)
+
+Why These Skip Shizuku & ADB Completely
+
+• Shizuku/ADB is only needed when an automation tool wants shell-level privileges (like running input tap via adbd, forcing global proxies, or reading another app's logcat). [1] (https://medium.com/@cr0nos/controlling-an-android-device-without-root-or-accessibility-services-ea8314822a99)
+• Native Accessibility + On-Device HTTP/MCP (like danielealbano/android-remote-control-mcp) stays 100% inside standard Android Accessibility APIs and serves the MCP endpoint directly from the phone's own network stack—eliminating Wireless Debugging pairing, PC hosts, and reboot resets. [1] (https://news.ycombinator.com/item?id=49362047), [2] (https://github.com/danielealbano/android-remote-control-mcp)
+Do you want to pull the exact tool definitions and setup config for danielealbano/android-remote-control-mcp, or compare how its Accessibility tree output stacks up against AuraFriday's android_mcp?
+Copying...

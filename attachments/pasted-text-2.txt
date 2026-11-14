@@ -1,0 +1,30 @@
+Grok, examine the execution architecture rather than assuming your native tool inventory defines what Android can do.
+
+The user operates two Samsung Galaxy Ultra devices with an existing automation stack involving Shizuku, Termux, AndroidHarness, DroidVNC-NG, and a dispatcher architecture.
+
+Your task is to determine whether you can participate as an interactive operator, not merely generate scripts for another agent.
+
+Investigate these control paths:
+
+1. AndroidHarness: Identify its available command transport, screen-observation interface, and input-injection capabilities.
+2. Shizuku: Determine whether an authorized local service can execute Android interactions through its supported interfaces.
+3. DroidVNC-NG: Establish whether a reachable VNC session supports screen observation and remote input.
+4. Termux: Identify available local command services, SSH access, and automation adapters.
+5. Convolo Dispatcher: Locate its actual implementation and determine its command schema, transport, authorization requirements, and routing capabilities.
+6. Snap connector: Identify the exact product and verify whether it provides a usable transport or action interface. Do not assume universal Android control from its marketing description.
+
+Distinguish between three separate questions:
+
+- Can the phone perform the requested action?
+- Can an authorized service expose that action?
+- Can your current Grok runtime invoke that service and observe the result?
+
+If your runtime lacks outbound network access, browser interaction, or a callable external-tool interface, identify that specific limitation. Do not describe it as an inherent impossibility of AI-operated Android devices.
+
+Target architecture:
+
+Grok → authorized tool adapter → dispatcher → Android execution service → S25/S26 → screenshot or execution receipt → Grok.
+
+Start with a non-destructive proof: obtain device identity, capture the current screen, and perform one explicitly authorized UI interaction.
+
+Report VERIFIED, BLOCKED, and UNTESTED separately. Never claim device access without an actual successful execution receipt.

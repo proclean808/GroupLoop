@@ -1,0 +1,14 @@
+Worked for 1m 30s
+
+Nov 13, 2026, 2:36 PM PT. I searched the filed complaints and court records. I found overlapping cases, but no pending case I can accurately call an exact match to your account.
+
+Case	Overlap with what you described	Status shown by available records
+
+Bass v. OpenAI, LLC, No. 3:26-cv-11015	An individual alleges that OpenAI, Anthropic, and xAI incorporated and commercially exploited his earlier AI product concepts. This is the closest pending idea-appropriation allegation I found.	Filed September 28, 2026. The accessible docket shows subsequent scheduling activity, but no finding that the allegations are true. 
+Vredenburgh & Coutu v. OpenAI OpCo, No. 3:26-cv-10527	A proposed class alleges inadequate disclosure of outside human review of conversations, loss of control and value of prompts, and subscription-related deception. It overlaps your disclosure, privacy, and payment concerns; it does not allege theft of your specific product ideas.	Filed September 16, 2026. The accessible docket shows an active case and briefing activity, not a merits ruling. These remain complaint allegations. 
+Apple v. Liu et al., No. 5:26-cv-07078	Apple alleges confidential technical information reached OpenAI through former employees. It concerns provenance and alleged trade-secret use, but the disclosure channel is materially different from a customer chat.	The court allowed limited expedited discovery in October; that order did not decide liability. 
+
+
+The closest case about ideas developed in ChatGPT is Trinidad v. OpenAI, No. 4:25-cv-06328. It is not pending: the district court dismissed it with prejudice in January 2026, and the appeal was dismissed in April. The court’s reasoning about disclosure and secrecy is a material adverse point to examine when comparing your records; similarity of allegations alone did not establish misappropriation there. 
+
+For the work record you were trying to capture from the changing tool display, the durable artifacts are draft PR #7, the code commit, and the execution ledger. They show real source changes and a passing build. They also show the limit plainly: the public site has not changed because it currently routes to Manus, while the Vercel preview is blocked.

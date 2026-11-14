@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platformula.local/schema/phone-group-call.json",
+  "title": "Phone through a Telegram group call",
+  "description": "Export of how a phone sits in a Telegram group call. Telegram names are from core.telegram.org/api/group-calls. The route is the stated assembly: the app is opened, the watch is the second key, the clerk sets one bit, and only then a phone may publish or listen. No device was contacted to produce this file.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "phones", "call", "clerk", "route"],
+  "$defs": {
+    "phone": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "role", "app_opened", "incoming_call_signal", "privilege", "container"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "role": { "enum": ["founder", "alpha", "beta", "caller"] },
+        "app_opened": {
+          "type": "boolean",
+          "description": "The app on the phone is opened. It is the container."
+        },
+        "incoming_call_signal": {
+          "const": "PHONE_STATE_RINGING",
+          "description": "Telephony state. Not the microphone and not the ringtone."
+        },
+        "privilege": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["production", "break_glass", "injection"],
+          "properties": {
+            "production": { "const": "shizuku" },
+            "break_glass": { "const": "magisksu_human_gated" },
+            "injection": { "const": "out" }
+          }
+        },
+        "container": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["skills"],
+          "properties": {
+            "skills": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/skill" }
+            }
+          }
+        },
+        "solid": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "buddy_mcp": { "const": "127.0.0.1:8765" },
+            "arrowloop": { "enum": ["installed", "absent"] },
+            "android_harness": { "enum": ["installed", "absent"] },
+            "shizuku": { "enum": ["on", "off"] }
+          }
+        },
+        "watch": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["held_to_phone"],
+          "properties": {
+            "held_to_phone": {
+              "type": "boolean",
+              "description": "Second key. The watch does not run the action."
+            }
+          }
+        }
+      }
+    },
+    "skill": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "skill_md", "receipts"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "skill_md": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["steps_only"],
+          "properties": {
+            "steps_only": { "const": true },
+            "holds_secret": { "const": false }
+          }
+        },
+        "receipts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["file", "counts_only"],
+          "properties": {
+            "file": { "const": "receipts.jsonl" },
+            "counts_only": { "const": true },
+            "ok": { "type": "integer", "minimum": 0 },
+            "attempts": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "participant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["phone_id", "peer", "muted", "left", "video_stopped"],
+      "properties": {
+        "phone_id": { "type": "string", "minLength": 1 },
+        "peer": { "type": "string", "description": "Telegram peer label. Not a phone number." },
+        "source": { "type": "integer" },
+        "muted": { "type": "boolean" },
+        "left": { "type": "boolean" },
+        "can_self_unmute": { "type": "boolean" },
+        "video_stopped": { "type": "boolean" },
+        "raise_hand": { "type": "boolean" },
+        "video": { "type": "boolean" },
+        "presentation": { "type": "boolean" },
+        "publisher": { "type": "boolean" }
+      }
+    }
+  },
+  "properties": {
+    "schema_version": { "const": "1" },
+    "phones": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/phone" }
+    },
+    "call": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "input", "participants"],
+      "properties": {
+        "mode": { "enum": ["video_chat", "rtmp_stream"] },
+        "tl_type": { "const": "GroupCall" },
+        "input": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["tl_type"],
+          "properties": {
+            "tl_type": { "const": "InputGroupCall" },
+            "id": { "type": ["string", "null"] },
+            "access_hash": {
+              "type": "null",
+              "description": "Never written into this export."
+            }
+          }
+        },
+        "methods": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "phone.createGroupCall",
+              "phone.joinGroupCall",
+              "phone.leaveGroupCall",
+              "phone.inviteToGroupCall",
+              "phone.editGroupCallParticipant",
+              "phone.getGroupCallStreamRtmpUrl",
+              "phone.getGroupCallStreamChannels"
+            ]
+          }
+        },
+        "rtmp": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "url_type": { "const": "phone.GroupCallStreamRtmpUrl" },
+            "key_in_export": { "const": false }
+          }
+        },
+        "participants": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/participant" }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "mode": { "const": "rtmp_stream" } }, "required": ["mode"] },
+          "then": {
+            "properties": {
+              "participants": {
+                "items": {
+                  "not": { "anyOf": [
+                    { "required": ["raise_hand"] },
+                    { "required": ["video"] },
+                    { "required": ["presentation"] }
+                  ] }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "clerk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bit", "decision", "model_in_decision"],
+      "properties": {
+        "bit": {
+          "enum": [0, 1],
+          "description": "0 proposes, seats, snips, or recalls. 1 allows one card onto the call. The call does not set this bit."
+        },
+        "decision": { "enum": ["allow", "deny", "approval_required"] },
+        "model_in_decision": { "const": false }
+      }
+    },
+    "route": {
+      "type": "array",
+      "minItems": 5,
+      "items": { "type": "string" },
+      "description": "Order of assembly. Speech on the call is not a step, because speech does not set the bit and does not open the app."
+    }
+  }
+}

@@ -1,0 +1,20 @@
+Searching Hacker News directly for on-device Android MCP and automation threads surfaces several specific projects, technical trade-offs, and developer discussions:
+
+1. Android MCP Projects & Show HN Threads
+
+• Android Remote Control MCP (danielealbano) — The author posted a Show HN detailing how this native APK runs an MCP server directly on the phone with no root, no ADB, and no PC in the middle. Key details from the thread:
+	• On-Device PII Redaction. Uses deterministic detectors plus a small local model to strip emails, phone numbers, card numbers, and names from the accessibility tree at an ~87% benchmarked detection rate before data leaves the phone.
+	• OAuth & Tunneling. Acts as its own OAuth server (approved via on-phone pairing code) and is adding a free end-to-end encrypted reverse tunnel using Let's Encrypt certificates so cloud relays like ngrok or Cloudflare cannot inspect traffic.
+	• Distribution & Security. Because it uses Android's Accessibility Service to read across apps, it cannot be listed on the Google Play Store and is distributed via GitHub and F-Droid. To block prompt injection from malicious UI text, it prefixes all returned screen data with untrusted-input warnings. [1] (https://news.ycombinator.com/item?id=49362047)
+• Mobile-MCP via Native Android Intents — A Hacker News discussion detailing an Android-native MCP architecture built on the Android Intent framework rather than screen scraping:
+	• Apps declare MCP capabilities with natural-language descriptions inside their manifest.
+	• An on-device assistant dynamically discovers exposed capabilities via PackageManager and invokes them directly through standard Android service binding and Intents—eliminating UI scraping and centralized schemas. [1] (https://news.ycombinator.com/item?id=47177770)
+• Mobile Tunnel (sealgate.ai) — A recent thread introducing a mobile tunnel MCP designed to expose hardware and app capabilities (Bluetooth, camera, and mobile UI control) directly to remote agents. [1] (https://news.ycombinator.com/item?id=50072608)
+• Aiope (github.com/xnet-ngo) — Listed on HN as an on-device AI agent for Android bundling a terminal, browser, SSH client, and MCP support directly on the handset. [1] (https://news.ycombinator.com/item?id=49667587)
+• Open Source Mobile-Use MCP (github.com/ghorbelhamdi) — A Show HN submission highlighting low-token mobile UI interaction compared to screenshot-based computer-use loops. [1] (https://news.ycombinator.com/item?id=50211548)
+
+2. Relevant Android Security & Architecture Threads on HN
+
+• Bypassing Android's Clipboard Read Security Measures — Currently trending on the Hacker News front page (toninoble.com), examining how Android restricts background clipboard access and where edge-case bypasses exist. [1] (https://news.ycombinator.com/)
+• The Advantages of Mobile Linux over AOSP — A recent HN thread analyzing the 309-million-line AOSP codebase and the trade-offs between standard Android forks and pure mobile Linux environments. [1] (https://news.ycombinator.com/item?id=50263847)
+Would you like to pull the exact repository details and architecture for the Intent-based Mobile-MCP (PackageManager discovery) or Aiope (xnet-ngo), or compare how Intent invocation beats Accessibility tree scraping for latency?
