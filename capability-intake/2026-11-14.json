@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "source": "proclean808/Baseline/intake/2026-11-14/manifest.json",
+  "bucket": "session-orchestration",
+  "upstream_candidates": [
+    "AgentMux",
+    "AgentMux Mobile"
+  ],
+  "capability_contract": "Group applications and sessions using explicit capability grants and independently verified outcomes",
+  "stage": "queued-for-engineering",
+  "requires": [
+    "license-review",
+    "duplicate-detection",
+    "adapter-design",
+    "contract-tests",
+    "evidence-receipt",
+    "protected-promotion"
+  ],
+  "auto_merge": false
+}
